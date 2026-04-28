@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShiSha Master - 水煙品牌與風味指南</title>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-bg: #0f0f0f;
+            --card-bg: #1e1e1e;
+            --text: #ffffff;
+            --sub-text: #b0b0b0;
+        }
+
+        body {
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 0 30px;
+            background: linear-gradient(to bottom, #1a1a1a, var(--dark-bg));
+        }
+
+        h1 {
+            color: var(--gold);
+            font-size: 2.5rem;
+            margin: 0;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            color: var(--sub-text);
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        /* 搜尋框 */
+        .search-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        #searchInput {
+            width: 80%;
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: 1px solid var(--gold);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        #searchInput:focus {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* 列表樣式 */
+        .brand-section {
+            margin-bottom: 40px;
+        }
+
+        .brand-title {
+            border-left: 4px solid var(--gold);
+            padding-left: 15px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            transition: 0.3s;
+            border: 1px solid #333;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+        }
+
+        .flavor-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .flavor-taste {
+            font-size: 0.9rem;
+            color: var(--sub-text);
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #555;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>💨 ShiSha Master</h1>
+        <p class="subtitle">探索頂級菸草與極致風味</p>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="搜尋品牌、菸草名字或味道...">
+    </div>
+
+    <div id="content">
+        <!-- 資料會自動填入這裡 -->
+    </div>
+
+    <footer>
+        &copy; 2024 ShiSha Collection. Enjoy Responsibly.
+    </footer>
+</div>
+
+<script>
+    // 這裡放你的水煙資料庫
+    const shishaList = [
+        { brand: "Al Fakher", name: "Two Apples (雙蘋果)", taste: "經典中的經典，帶有濃郁紅蘋果與茴香氣息", type: "經典款" },
+        { brand: "Social Smoke", name: "Hong Kong Milk Tea (港式奶茶)", taste: "絲滑奶香伴隨濃厚茶感，層次豐富", type: "甜品系" },
+        { brand: "Tangiers", name: "Cane Mint (強勁薄荷)", taste: "極致冰涼，薄荷香氣純淨且衝擊力強", type: "清涼系" },
+        { brand: "Starbuzz", name: "Blue Mist (藍霧)", taste: "甜美的藍莓融合清爽薄荷，新手必試", type: "果香系" },
+        { brand: "Azure", name: "Lemongrass (檸檬草)", taste: "像泰式SPA般的清爽草本味道", type: "清新系" },
+        { brand: "Fumari", name: "White Gummy Bear (白軟糖)", taste: "甜甜的菠蘿軟糖味，大煙霧量代表", type: "甜品系" }
+    ];
+
+    const contentDiv = document.getElementById('content');
+    const searchInput = document.getElementById('searchInput');
+
+    function render(filter = "") {
+        contentDiv.innerHTML = "";
+        
+        // 依照品牌分組
+        const brands = [...new Set(shishaList.map(item => item.brand))];
+
+        brands.forEach(brand => {
+            const filteredFlavors = shishaList.filter(item => 
+                item.brand === brand && 
+                (item.name.toLowerCase().includes(filter.toLowerCase()) || 
+                 item.taste.toLowerCase().includes(filter.toLowerCase()))
+            );
+
+            if (filteredFlavors.length > 0) {
+                let section = `
+                    <div class="brand-section">
+                        <div class="brand-title">${brand}</div>
+                        <div class="grid">
+                `;
+
+                filteredFlavors.forEach(f => {
+                    section += `
+                        <div class="card">
+                            <span class="flavor-name">${f.name}</span>
+                            <div class="flavor-taste">👅 ${f.taste}</div>
+                            <span class="tag">${f.type}</span>
+                        </div>
+                    `;
+                });
+
+                section += `</div></div>`;
+                contentDiv.innerHTML += section;
+            }
+        });
+    }
+
+    searchInput.addEventListener('input', (e) => render(e.target.value));
+
+    // 初始載入
+    render();
+</script>
+
+</body>
+</html>
